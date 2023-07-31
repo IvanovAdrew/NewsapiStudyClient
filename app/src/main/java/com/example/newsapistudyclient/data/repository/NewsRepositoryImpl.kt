@@ -11,13 +11,13 @@ import retrofit2.Response
 class NewsRepositoryImpl(
     private val newsRemoteDataSource: NewsRemoteDataSource
 ):NewsRepository {
-    override suspend fun getNewsHeadlines(): Resource<APIResponce> {
-        return responseToResource(newsRemoteDataSource.getTopHeadlines())
+    override suspend fun getNewsHeadlines(country: String, page: Int): Resource<APIResponce> {
+        return responseToResource(newsRemoteDataSource.getTopHeadlines(country, page))
     }
 
     private fun responseToResource(response: Response<APIResponce>): Resource<APIResponce>{
         if (response.isSuccessful){
-            //берём боди резальта как резальт, и засовываем его через класс саксеса в ресурсе
+            //берём боди ответа сервера как резальт, и засовываем его через класс саксеса в ресурсе
             response.body()?.let { result->
                 return Resource.Success(result)
             }

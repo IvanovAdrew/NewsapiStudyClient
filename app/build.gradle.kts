@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -14,7 +16,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         buildConfigField("String","API_KEY","\"${properties["MY_KEY"]}\"")
-        buildConfigField("String","BASE_KEY","\"${properties["MY_URL"]}\"")
+        buildConfigField("String","BASE_URL","\"${properties["MY_URL"]}\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,9 +40,15 @@ android {
     buildFeatures{
         buildConfig = true
     }
+    // Allow references to generated code
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
+    val lifecycle_version = "2.6.1"
+    val arch_version = "2.2.0"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -51,7 +59,19 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    // ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    // LiveData
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    // Annotation processor
+    kapt ("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
+    implementation ("com.google.dagger:hilt-android:2.44")
+    kapt ("com.google.dagger:hilt-compiler:2.44")
+    //MockWebServer
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     testImplementation("junit:junit:4.13.2")
+    testImplementation ("com.google.truth:truth:1.1.4")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
