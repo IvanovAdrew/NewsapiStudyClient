@@ -42,7 +42,7 @@ class NewsAdapter:RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         fun bind(article: Article){
             binding.tvTitle.text = article.title
             binding.tvDescription.text = article.description
-            binding.tvSource.text = article.source.name
+            binding.tvSource.text = article.source?.name
             binding.tvPublishedAt.text = article.publishedAt
             Glide.with(binding.ivArticleImage.context)
                 .load(article.urlToImage)

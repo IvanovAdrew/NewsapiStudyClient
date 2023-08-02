@@ -53,7 +53,7 @@ android {
 dependencies {
     val lifecycle_version = "2.6.1"
     val arch_version = "2.2.0"
-    val nav_version = "2.5.3"
+    val nav_version = "2.6.0"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -69,7 +69,12 @@ dependencies {
     // Kotlin
     implementation ("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
+    val room_version = "2.5.2"
 
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
     // Feature module Support
     implementation ("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
     // ViewModel
@@ -86,4 +91,5 @@ dependencies {
     testImplementation ("com.google.truth:truth:1.1.5")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
 }

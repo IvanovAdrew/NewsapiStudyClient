@@ -10,14 +10,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapistudyclient.data.model.APIResponce
+import com.example.newsapistudyclient.data.model.Article
 import com.example.newsapistudyclient.data.util.Resource
 import com.example.newsapistudyclient.domain.usecase.GetNewsHeadlinesUseCase
+import com.example.newsapistudyclient.domain.usecase.GetSearchedNewsUseCase
+import com.example.newsapistudyclient.domain.usecase.SaveNewsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class NewsViewModel(
     private val app:Application,
-    val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase
+    private val getNewsHeadlinesUseCase: GetNewsHeadlinesUseCase,
+    private val getSearchedNewsUseCase: GetSearchedNewsUseCase,
+    private val saveNewsUseCase: SaveNewsUseCase
 ) : AndroidViewModel(app) {
     val newsHeadLines: MutableLiveData<Resource<APIResponce>> = MutableLiveData()
 
@@ -62,5 +67,33 @@ class NewsViewModel(
             }
         }
         return result
+    }
+    //search
+    val searchedNews : MutableLiveData<Resource<APIResponce>> = MutableLiveData()
+
+    fun searchNews(
+        country: String,
+        searchQuery: String,
+        page: Int
+    ) = viewModelScope.launch {
+        searchedNews.postValue(Resource.Loading())
+        try {
+            if (isInternetAvailable(app)) {
+                val response = getSearchedNewsUseCase.execute(
+                    country,
+                    searchQuery,
+                    page
+                )
+                searchedNews.postValue(response)
+            } else {
+                searchedNews.postValue(Resource.Error("No internet connection"))
+            }
+        }catch (e:Exception){
+            searchedNews.postValue(Resource.Error(e.message.toString()))
+        }
+    }
+        //local data
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        saveNewsUseCase.execute(article)
     }
 }
