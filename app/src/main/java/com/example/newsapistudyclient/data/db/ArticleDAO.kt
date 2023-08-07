@@ -8,5 +8,5 @@ import com.example.newsapistudyclient.data.model.Article
 @Dao
 interface ArticleDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(article: Article) : Unit
+    suspend fun insert(article: Article)
 }
