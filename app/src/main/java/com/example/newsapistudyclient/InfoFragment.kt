@@ -33,7 +33,7 @@ class InfoFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
         fragmentInfoBinding.wvInfo.apply {
             webViewClient = WebViewClient()
-            if (article.url!=null) {
+            if ((article.url!=null) && (article.url!="")) {
                 loadUrl(article.url)
             }
         }

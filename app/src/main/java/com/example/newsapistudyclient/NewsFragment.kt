@@ -1,6 +1,7 @@
 package com.example.newsapistudyclient
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,13 +47,20 @@ class NewsFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
         newsAdapter = (activity as MainActivity).newsAdapter
         newsAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable("selected_article",it)
+            Log.i("MYTAG",it.source?.id.toString())
+            Log.i("MYTAG",it.source?.name.toString())
+            if (it.source?.id==null){
+                it.source?.id=Math.random().toString()
             }
-            findNavController().navigate(
-                R.id.action_newsFragment_to_infoFragment,
-                bundle
-            )
+                    val bundle = Bundle().apply {
+                        putSerializable("selectedArticle", it)
+                    }
+                    findNavController().navigate(
+                        R.id.action_newsFragment_to_infoFragment,
+                        bundle
+                    )
+
+
         }
         initRecycleView()
         viewNewsList()

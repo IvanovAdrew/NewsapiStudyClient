@@ -3,7 +3,9 @@ plugins {
     id("com.android.application")
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("kotlin-parcelize")
+    //id("com.google.devtools.ksp")
 }
 //
 //
@@ -34,11 +36,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kapt {
+        correctErrorTypes = true
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures{
         buildConfig = true
@@ -50,10 +55,10 @@ android {
 }
 
 dependencies {
-    val lifecycle_version = "2.6.1"
+    val lifecycle_version = "2.6.0"
     val arch_version = "2.2.0"
     val nav_version = "2.6.0"
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.9.0-1.0.13")
+    //implementation("com.google.devtools.ksp:symbol-processing-api:1.9.0-1.0.13")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -71,8 +76,12 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:$nav_version")
     val room_version = "2.5.2"
 
+    // Java language implementation
+    implementation("androidx.navigation:navigation-fragment:$nav_version")
+    implementation("androidx.navigation:navigation-ui:$nav_version")
+
     implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
     // Feature module Support
@@ -82,9 +91,9 @@ dependencies {
     // LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
     // Annotation processor
-    ksp ("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
+    kapt ("androidx.lifecycle:lifecycle-compiler:$lifecycle_version")
     implementation ("com.google.dagger:hilt-android:2.44")
-    ksp ("com.google.dagger:hilt-compiler:2.44")
+    kapt ("com.google.dagger:hilt-compiler:2.44")
     //MockWebServer
     testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     testImplementation("junit:junit:4.13.2")

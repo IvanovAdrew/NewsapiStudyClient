@@ -29,8 +29,8 @@
         android:label="fragment_info"
         tools:layout="@layout/fragment_info" >
         <argument
-            android:name="selected_article"
-            app:argType="com.example.newsapistudyclient.data.model.Article" />
-
+            android:name="selectedArticle"
+            app:argType="com.example.newsapistudyclient.data.model.Article"
+            app:nullable="false" />
     </fragment>
 </navigation>
